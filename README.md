@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Curricool - Gerador de Currículos Online
 
-## Getting Started
+Curricool é uma aplicação web que permite criar currículos profissionais de forma rápida e fácil, com visualizações em diferentes templates e suporte à exportação em PDF e JSON.
 
-First, run the development server:
+---
+
+## 🚀 Funcionalidades
+
+- Criação de currículos em diferentes templates: **ATS** e **Clean**.
+- Edição de informações pessoais, experiências, educação, skills, idiomas, certificados e projetos.
+- Suporte a múltiplos idiomas (Português e Inglês).
+- Exportação do currículo em **PDF** e **JSON**.
+- Preview em tempo real do currículo.
+- Interface responsiva para desktop e mobile.
+
+---
+
+## 🛠 Tecnologias
+
+- **Frontend:** React, Tailwind CSS
+- **Componentes:** forwardRef, useMemo
+- **Exportação:** PDF e JSON
+- **Icons:** Lucide Icons
+- **Responsividade:** Mobile-first com Tailwind
+
+---
+
+## ⚡ Como usar
+
+1. Clone o repositório:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/seu-usuario/curricool.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## LICENSE
+MIT License
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copyright (c) 2025 Carlos Andrade
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-## Learn More
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

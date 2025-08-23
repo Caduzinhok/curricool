@@ -1,103 +1,138 @@
-import Image from "next/image";
+"use client";
+import React, { useMemo, useRef, useState, useEffect, forwardRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import { ResumeData, TemplateProps } from "@/types/types";
+import SkillsForm from "@/components/forms/skills";
+import { demoData } from "@/utils/demo-data";
+import ExperienceForm from "@/components/forms/experience";
+import EducationForm from "@/components/forms/education";
+import LanguageForm from "@/components/forms/languages";
+import ProjectsForm from "@/components/forms/projects";
+import PreviewForm from "@/components/forms/preview";
+import BasicInformationForm from "@/components/forms/basic-information";
+import HeaderForm from "@/components/forms/header-form";
+import { TemplateClean } from "@/templates/TemplateClean";
+import { TemplateATS } from "@/templates/TemplateATS";
+import CertificateForm from "@/components/forms/certificates";
+
+import Navbar from "@/components/navbar";
+import { Download } from "lucide-react";
+
+TemplateClean.displayName = "TemplateClean";
+TemplateATS.displayName = "TemplateATS";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [data, setData] = useState<ResumeData>(demoData);
+  const [language, setLanguage] = useState<"en" | "pt">("pt");
+  const [template, setTemplate] = useState("ATS");
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [isPrinting, setIsPrinting] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  // We store the resolve Promise being used in `onBeforePrint` here
+  const promiseResolveRef = useRef<((value?: void | PromiseLike<void>) => void) | null>(null);
+
+
+  const handlePrint = useReactToPrint({
+    documentTitle: `Currículo - ${data.basics?.name || 'Sem nome'}`,
+    contentRef: contentRef,
+    pageStyle: `@page { size: A4; margin: 0; } body { margin: 0; }`,
+    onBeforePrint: () => {
+      return new Promise((resolve) => {
+        promiseResolveRef.current = resolve;
+        setIsPrinting(true);
+      });
+    },
+    onAfterPrint: () => {
+      setIsPrinting(false);
+      promiseResolveRef.current = null;
+    },
+  });
+
+  // We watch for the state to change here, and for the Promise resolve to be available
+  useEffect(() => {
+    if (isPrinting && promiseResolveRef.current) {
+      // Resolves the Promise, letting `react-to-print` know that the DOM updates are completed
+      promiseResolveRef.current();
+    }
+  }, [isPrinting]);
+
+  const TemplateATSWithLang = forwardRef<HTMLDivElement, TemplateProps>(
+    (props, ref) => <TemplateATS {...props} language={language} ref={ref} />
+  );
+
+  const TemplateCleanWithLang = forwardRef<HTMLDivElement, TemplateProps>(
+    (props, ref) => <TemplateClean {...props} language={language} ref={ref} />
+  );
+
+  const TemplateComponent = useMemo(() => {
+    return template === "ATS" ? TemplateATSWithLang : TemplateCleanWithLang;
+  }, [template, language]);
+
+
+
+  return (
+    <div className="min-h-screen bg-gradient-to-tl from-gray-800 to-gray-900 text-gray-100 flex flex-col">
+      {/* Header */}
+      <Navbar handlePrint={handlePrint} data={data} setData={setData} />
+
+      {/* Hero text */}
+      <div className="text-center text-gray-100 text-lg sm:text-xl md:text-2xl font-bold mt-6 px-4 sm:px-0">
+        Crie seu currículo profissional em minutos e conquiste a vaga dos seus sonhos!
+      </div>
+
+      {/* Main content */}
+      <main className="flex-1 mx-auto px-4 sm:px-12 py-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Editor */}
+        <section className="border border-gray-400 rounded-2xl shadow-lg p-4 flex flex-col gap-6">
+          <HeaderForm
+            language={language}
+            setLanguage={setLanguage}
+            template={template}
+            setTemplate={setTemplate}
+          />
+          <BasicInformationForm setData={setData} data={data} />
+          <ExperienceForm setData={setData} data={data} />
+          <div className="grid grid-cols-1 gap-4">
+            <SkillsForm data={data} setData={setData} />
+            <EducationForm setData={setData} data={data} />
+            <CertificateForm data={data} setData={setData} />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <LanguageForm setData={setData} data={data} />
+            <ProjectsForm setData={setData} data={data} />
+          </div>
+          <button
+            onClick={handlePrint}
+            className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-emerald-600 to-sky-700 text-white font-semibold rounded-2xl shadow-lg hover:opacity-90 active:scale-95 transition-all duration-200 text-sm sm:text-base"
+            title="Exportar PDF"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+            <Download size={16} />Gerar PDF
+          </button>
+        </section>
+
+        {/* Preview */}
+        <PreviewForm
+          TemplateComponent={TemplateComponent}
+          language={language}
+          contentRef={contentRef}
+          data={data}
+        />
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+
+      {/* Footer */}
+      <footer className="py-6 text-center text-xs text-gray-100 px-4 sm:px-0">
+        © Dev StartS. Feito por{" "}
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          href="https://github.com/Caduzinhok"
+          className="underline"
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noreferrer"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
+          Caduzinhok
         </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
       </footer>
     </div>
+
   );
 }

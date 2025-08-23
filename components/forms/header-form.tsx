@@ -1,7 +1,3 @@
-import { TemplateATS } from "@/templates/TemplateATS";
-import { TemplateClean } from "@/templates/TemplateClean";
-import { TemplateProps } from "@/types/types";
-import { forwardRef, useMemo } from "react";
 
 interface HeaderFormProps {
     template: string;

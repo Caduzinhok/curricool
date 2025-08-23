@@ -4,7 +4,7 @@ import Input from "../Input";
 
 interface SkillFormsProps {
     setData: React.Dispatch<React.SetStateAction<ResumeData>>;
-    data: any;
+    data: ResumeData;
 }
 
 export default function SkillsForm({ setData, data }: SkillFormsProps) {

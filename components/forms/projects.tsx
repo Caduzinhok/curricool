@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 
 interface ProjectsFormProps {
     setData: React.Dispatch<React.SetStateAction<ResumeData>>;
-    data: any;
+    data: ResumeData;
 }
 
 export default function ProjectsForm({ setData, data }: ProjectsFormProps) {

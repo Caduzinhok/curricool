@@ -5,7 +5,7 @@ import { PatchLanguage } from "@/app/handlers";
 
 interface LanguageFormProps {
     setData: React.Dispatch<React.SetStateAction<ResumeData>>;
-    data: any;
+    data: ResumeData;
 }
 
 export default function LanguageForm({ setData, data }: LanguageFormProps) {

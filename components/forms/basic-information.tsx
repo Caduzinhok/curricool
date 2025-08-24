@@ -6,7 +6,7 @@ import { PatchBasics } from "@/app/handlers";
 
 interface BasicInformationProps {
     setData: React.Dispatch<React.SetStateAction<ResumeData>>;
-    data: any;
+    data: ResumeData;
 }
 
 export default function BasicInformationForm({ setData, data }: BasicInformationProps) {

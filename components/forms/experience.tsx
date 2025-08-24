@@ -7,7 +7,7 @@ import { maskMonthYear } from "@/utils/data-handlers";
 
 interface ExperienceFormProps {
   setData: React.Dispatch<React.SetStateAction<ResumeData>>;
-  data: any;
+  data: ResumeData;
 }
 
 export default function ExperienceForm({ setData, data }: ExperienceFormProps) {

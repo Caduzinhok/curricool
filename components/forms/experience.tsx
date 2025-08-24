@@ -36,38 +36,35 @@ export default function ExperienceForm({ setData, data }: ExperienceFormProps) {
             <Input
               label="Início"
               placeholder="MM/AAAA"
-              value={data.experience[idx].start}
-              onChange={(e) => {
-                const masked = maskMonthYear(e.target.value);
-                const match = /^(\d{2})\/(\d{4})$/.exec(masked);
-                if (match) {
-                  patchExperience(idx, { start: `${match[2]}-${match[1]}` });
-                } else {
-                  patchExperience(idx, { start: masked });
+                value={
+                  data.experience[idx].start
                 }
-              }}
+                onChange={(e) => {
+                  const masked = maskMonthYear(e.target.value);
+                  patchExperience(idx, { start: masked });
+                }} 
             />
             <div className="items-start gap-2 w-full">
-              <Input label="Término" value={data.experience[idx].end} placeholder="MM/YYYY" onChange={(e) => {
-                const masked = maskMonthYear(e.target.value);
-                const match = /^(\d{2})\/(\d{4})$/.exec(masked);
-                if (match) {
-                  patchExperience(idx, { end: `${match[2]}-${match[1]}` });
-                } else {
-                  patchExperience(idx, { end: masked });
+              <Input label="Término"
+                value={
+                  data.experience[idx].end
                 }
-              }} />
+                onChange={(e) => {
+                  const masked = maskMonthYear(e.target.value);
+                  patchExperience(idx, { end: masked });
+                }} 
+                />
 
               <div className="flex items-center mt-1 gap-2">
-              <input
-                type="checkbox"
-                id={`current-${idx}`}
-                checked={data.experience[idx].end === "Atual"}
-                onChange={(e) =>
-                  patchExperience(idx, { end: e.target.checked ? "Atual" : "" })
-                }
-              />
-              <label htmlFor={`current-${idx}`} className="text-sm text-white mr-2">Atual</label>
+                <input
+                  type="checkbox"
+                  id={`current-${idx}`}
+                  checked={data.experience[idx].end === "Presente"}
+                  onChange={(e) =>
+                    patchExperience(idx, { end: e.target.checked ? "Presente" : "" })
+                  }
+                />
+                <label htmlFor={`current-${idx}`} className="text-sm text-white mr-2">Presente</label>
 
               </div>
             </div>

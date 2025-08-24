@@ -2,6 +2,7 @@ import { ArrayEditor } from "../array-editor";
 import { ResumeData } from "@/types/types";
 import Input from "../Input";
 import { PatchLanguage } from "@/app/handlers";
+import Select from "../select";
 
 interface LanguageFormProps {
     setData: React.Dispatch<React.SetStateAction<ResumeData>>;
@@ -23,7 +24,14 @@ export default function LanguageForm({ setData, data }: LanguageFormProps) {
                 renderItem={(item, idx: number) => (
                     <div className="grid grid-cols-2 gap-3">
                         <Input label="Idioma" value={data.languages[idx].name} onChange={(e) => patchLanguage(idx, { name: e.target.value })} />
-                        <Input label="Nível" value={data.languages[idx].level} onChange={(e) => patchLanguage(idx, { level: e.target.value })} />
+                        <Select label="Nível" value={data.languages[idx].level} onChange={(e) => patchLanguage(idx, { level: e.target.value })}>
+                            <option value=""></option>
+                            <option value="Básico">Básico</option>
+                            <option value="Intermediário">Intermediário</option>
+                            <option value="Avançado">Avançado</option>
+                            <option value="Fluente">Fluente</option>
+                            <option value="Nativo">Nativo</option>
+                        </Select>
                     </div>
                 )}
             />

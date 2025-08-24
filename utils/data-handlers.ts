@@ -175,3 +175,17 @@ export function maskMonthYear(value: string): string {
 
   return cleaned;
 }
+
+export function formatPhoneBR(value: string) {
+  // Remove tudo que não for número
+  const digits = value.replace(/\D/g, "");
+
+  // Limita a quantidade de números (55 + DDD + número)
+  const limited = digits.slice(0, 13);
+
+  // Formata conforme a quantidade de dígitos
+  if (limited.length <= 2) return `+${limited}`;
+  if (limited.length <= 4) return `+${limited.slice(0, 2)} ${limited.slice(2)}`;
+  if (limited.length <= 9) return `+${limited.slice(0, 2)} ${limited.slice(2, 4)} ${limited.slice(4)}`;
+  return `+${limited.slice(0, 2)} ${limited.slice(2, 4)} ${limited.slice(4, 9)}-${limited.slice(9)}`;
+}

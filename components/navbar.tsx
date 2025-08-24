@@ -3,6 +3,7 @@ import { ResumeData } from "@/types/types";
 import { demoData } from "@/utils/demo-data";
 import { exportJSON } from "@/utils/json";
 import { Download, RefreshCw, Save } from "lucide-react";
+import CurricoolTitle from "./curricool-title";
 
 interface NavbarProps {
     handlePrint: () => void;
@@ -19,7 +20,7 @@ export default function Navbar({ handlePrint, data, setData }: NavbarProps) {
                 <div className="mx-auto px-4 sm:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <CurricoolLogo />
-                    <CurricoolLogo />
+                    <CurricoolTitle />
                   </div>
                   <div className="flex flex-wrap justify-center sm:justify-end items-center gap-2 mt-2 sm:mt-0">
                     <button

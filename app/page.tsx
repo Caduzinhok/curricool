@@ -25,7 +25,7 @@ export default function Home() {
   const [data, setData] = useState<ResumeData>(demoData);
   const [language, setLanguage] = useState<"en" | "pt">("pt");
   const [template, setTemplate] = useState("ATS");
-  const contentRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [isPrinting, setIsPrinting] = useState(false);
 
   // We store the resolve Promise being used in `onBeforePrint` here
@@ -57,12 +57,14 @@ export default function Home() {
   }, [isPrinting]);
 
   const TemplateATSWithLang = forwardRef<HTMLDivElement, TemplateProps>(
-    (props, ref) => <TemplateATS {...props} language={language} ref={ref} />
+    (props, ref) => <TemplateATS {...props} ref={ref} />
   );
+  TemplateATSWithLang.displayName = "TemplateATSWithLang";
 
   const TemplateCleanWithLang = forwardRef<HTMLDivElement, TemplateProps>(
-    (props, ref) => <TemplateClean {...props} language={language} ref={ref} />
+    (props, ref) => <TemplateClean {...props} ref={ref} />
   );
+  TemplateCleanWithLang.displayName = "TemplateCleanWithLang";
 
   const TemplateComponent = useMemo(() => {
     return template === "ATS" ? TemplateATSWithLang : TemplateCleanWithLang;

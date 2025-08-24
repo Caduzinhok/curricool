@@ -6,7 +6,7 @@ import { Download, RefreshCw, Save } from "lucide-react";
 
 interface NavbarProps {
     handlePrint: () => void;
-    data: any;
+    data: ResumeData;
     setData: (data: React.SetStateAction<ResumeData>) => void;
 }
 

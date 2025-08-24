@@ -1,10 +1,11 @@
 import { ArrayEditor } from "../array-editor";
 import { ResumeData } from "@/types/types";
 import Input from "../Input";
+import { PatchCertificate } from "@/app/handlers";
 
 interface CertificateFormsProps {
     setData: React.Dispatch<React.SetStateAction<ResumeData>>;
-    data: any;
+    data: ResumeData;
 }
 
 export default function CertificateForm({ setData, data }: CertificateFormsProps) {
@@ -14,12 +15,12 @@ export default function CertificateForm({ setData, data }: CertificateFormsProps
 
     return (
         <>
-            <ArrayEditor
+            <ArrayEditor<PatchCertificate>
                 label="Cursos e Certificados"
                 items={data.certificates || []}
                 onAdd={addCertificate}
                 onRemove={removeCertificate}
-                renderItem={(idx) => (
+                renderItem={(item, idx: number) => (
                     <Input label="Curso" value={data.certificates[idx].name} onChange={(e) => patchCertificate(idx, e.target.value)} />
                 )}
             />

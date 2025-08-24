@@ -1,15 +1,21 @@
-import { Plus, Trash2 } from "lucide-react";
 import React from "react";
+import { Plus, Trash2 } from "lucide-react";
 
-interface ArrayEditorProps {
+interface ArrayEditorProps<T> {
   label: string;
-  items: any[];
+  items: T[];
   onAdd: () => void;
   onRemove: (index: number) => void;
-  renderItem: (index: number) => React.ReactNode;
+  renderItem: (item: T, index: number) => React.ReactNode;
 }
 
-export function ArrayEditor({ label, items, onAdd, onRemove, renderItem }: ArrayEditorProps) {
+export function ArrayEditor<T>({
+  label,
+  items,
+  onAdd,
+  onRemove,
+  renderItem,
+}: ArrayEditorProps<T>) {
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
@@ -23,7 +29,7 @@ export function ArrayEditor({ label, items, onAdd, onRemove, renderItem }: Array
         </button>
       </div>
       <div className="space-y-2">
-        {items.map((_, idx) => (
+        {items.map((item, idx) => (
           <div key={idx} className="p-2 rounded-xl border border-gray-200">
             <div className="flex justify-end">
               <button
@@ -34,7 +40,7 @@ export function ArrayEditor({ label, items, onAdd, onRemove, renderItem }: Array
                 <Trash2 size={16} />
               </button>
             </div>
-            {renderItem(idx)}
+            {renderItem(item, idx)}
           </div>
         ))}
       </div>

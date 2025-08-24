@@ -1,12 +1,12 @@
 import { ResumeData } from "@/types/types";
 import classNames from "../class-names";
-import React from "react";
+import React, { RefObject } from "react";
 import { Language } from "@/types/translate";
 
 interface PreviewFormProps {
     data: ResumeData
     language: Language
-    contentRef: any //RefObject<HTMLDivElement>;
+    contentRef: RefObject<HTMLDivElement | null> //RefObject<HTMLDivElement>;
     TemplateComponent: React.ForwardRefExoticComponent<{ data: ResumeData, language: Language } & React.RefAttributes<HTMLDivElement>>;
 }
 

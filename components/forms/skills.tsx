@@ -1,6 +1,7 @@
 import { ArrayEditor } from "../array-editor";
-import { ResumeData } from "@/types/types";
+import { ResumeData, ResumeSkill } from "@/types/types";
 import Input from "../Input";
+import { PatchSkill } from "@/app/handlers";
 
 interface SkillFormsProps {
     setData: React.Dispatch<React.SetStateAction<ResumeData>>;
@@ -14,12 +15,12 @@ export default function SkillsForm({ setData, data }: SkillFormsProps) {
 
     return (
         <>
-            <ArrayEditor
+            <ArrayEditor<PatchSkill>
                 label="Habilidades"
-                items={data.skills || []}
+                items={data.skills}
                 onAdd={addSkill}
                 onRemove={removeSkill}
-                renderItem={(idx) => (
+                renderItem={(item, idx: number) => (
                     <Input label="Habilidade" value={data.skills[idx].name} onChange={(e) => patchSkill(idx, e.target.value)} />
                 )}
             />

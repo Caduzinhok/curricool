@@ -23,12 +23,12 @@ export default function ProjectsForm({ setData, data }: ProjectsFormProps) {
     }));
     return (
         <>
-            <ArrayEditor
+            <ArrayEditor<PatchProject>
                 label="Projetos"
                 items={data.projects || []}
                 onAdd={addProject}
                 onRemove={removeProject}
-                renderItem={(idx) => (
+                renderItem={(item, idx: number) => (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <Input label="Nome" value={data.projects[idx].name} onChange={(e) => patchProject(idx, { name: e.target.value })} />
                         <Input label="Link" value={data.projects[idx].link} onChange={(e) => patchProject(idx, { link: e.target.value })} />

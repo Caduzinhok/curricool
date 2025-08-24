@@ -24,12 +24,12 @@ export default function ExperienceForm({ setData, data }: ExperienceFormProps) {
   }));
   return (
     <div className="mt-6">
-      <ArrayEditor
+      <ArrayEditor<PatchExperience>
         label="Experiências"
         items={data.experience || []}
         onAdd={addExperience}
         onRemove={removeExperience}
-        renderItem={(idx) => (
+        renderItem={(item, idx: number) => (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <Input label="Empresa" value={data.experience[idx].company} onChange={(e) => patchExperience(idx, { company: e.target.value })} />
             <Input label="Cargo" value={data.experience[idx].role} onChange={(e) => patchExperience(idx, { role: e.target.value })} />

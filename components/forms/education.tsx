@@ -7,7 +7,7 @@ import { maskMonthYear } from "@/utils/data-handlers";
 
 interface EducationFormProps {
     setData: React.Dispatch<React.SetStateAction<ResumeData>>;
-    data: any;
+    data: ResumeData;
 }
 
 export default function EducationForm({ setData, data }: EducationFormProps) {
@@ -17,12 +17,12 @@ export default function EducationForm({ setData, data }: EducationFormProps) {
 
     return (
         <>
-            <ArrayEditor
+            <ArrayEditor<PatchEducation>
                 label="Educação"
                 items={data.education || []}
                 onAdd={addEducation}
                 onRemove={removeEducation}
-                renderItem={(idx) => (
+                renderItem={(item, idx: number) => (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <Input label="Instituição" value={data.education[idx].institution} onChange={(e) => patchEducation(idx, { institution: e.target.value })} />
                         <Select

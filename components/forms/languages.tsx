@@ -15,12 +15,12 @@ export default function LanguageForm({ setData, data }: LanguageFormProps) {
 
     return (
         <>
-            <ArrayEditor
+            <ArrayEditor<PatchLanguage>
                 label="Idiomas"
                 items={data.languages || []}
                 onAdd={addLanguage}
                 onRemove={removeLanguage}
-                renderItem={(idx) => (
+                renderItem={(item, idx: number) => (
                     <div className="grid grid-cols-2 gap-3">
                         <Input label="Idioma" value={data.languages[idx].name} onChange={(e) => patchLanguage(idx, { name: e.target.value })} />
                         <Input label="Nível" value={data.languages[idx].level} onChange={(e) => patchLanguage(idx, { level: e.target.value })} />

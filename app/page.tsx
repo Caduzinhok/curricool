@@ -132,7 +132,6 @@ export default function Home() {
         >
           Caduzinhok
         </a>
-
       </footer>
     </div>
 

@@ -35,7 +35,6 @@ export default function EducationForm({ setData, data }: EducationFormProps) {
                             <option value="Ensino Médio">Ensino Médio</option>
                             <option value="Técnico">Técnico</option>
                             <option value="Tecnólogo">Tecnólogo</option>
-                            <option value="Graduação">Graduação</option>
                             <option value="Licenciatura">Licenciatura</option>
                             <option value="Bacharelado">Bacharelado</option>
                             <option value="Pós-graduação">Pós-graduação</option>

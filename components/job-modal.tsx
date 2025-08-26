@@ -35,8 +35,7 @@ export default function JobModal({ setIsModalOpen, data }: JobModalProps) {
         {/* Header */}
         <div className="flex justify-between items-start mb-4 w-full">
           <div className="flex flex-col">
-            <span className="text-red-500 font-semibold text-lg">Em Teste</span>
-            <h2 className="text-xl font-semibold text-gray-800">
+            <h2 className="text-2xl font-semibold text-slate-700">
               Analisar Vaga
             </h2>
             <p className="text-gray-500 text-sm">

@@ -1,37 +1,35 @@
 import { ResumeData, Score } from "@/types/types";
 import { hardSkills as allHardSkills } from "./hard-skills";
 import { softSkills as allSoftSkills } from "./soft-skills";
+import { fuzzyMatch } from "./similarity";
 
-// Normaliza texto
+// Normalizar o texto
 const normalize = (text: string) =>
   text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 // Escapa caracteres especiais para regex
-function escapeRegex(word: string): string {
-  return word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+const escapeRegex = (word: string) =>
+  word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // Verifica se palavra inteira existe no texto
-function containsWholeWord(text: string, word: string): boolean {
-  const escaped = escapeRegex(word);
-  const regex = new RegExp(`\\b${escaped}\\b`, "i");
+const containsWholeWord = (text: string, word: string): boolean => {
+  const regex = new RegExp(`\\b${escapeRegex(word)}\\b`, "i");
   return regex.test(text);
-}
+};
 
 // Função principal de análise ATS
 export function analisarATS(vaga: string, resume: ResumeData): Score {
   const vagaNormalized = normalize(vaga);
 
-  // Extrair skills da vaga
+  // Extrair skills relevantes da vaga
   const hardSkillsVaga = allHardSkills.filter((skill) =>
-  {
-    return containsWholeWord(vagaNormalized, normalize(skill))
-  }
+    containsWholeWord(vagaNormalized, normalize(skill))
   );
-  const softSkillsVaga = allSoftSkills.filter((skill) => {
-    return containsWholeWord(vagaNormalized, normalize(skill));
-  });
+  const softSkillsVaga = allSoftSkills.filter((skill) =>
+    containsWholeWord(vagaNormalized, normalize(skill))
+  );
 
+  // Se não achou nenhuma skill na vaga
   if (hardSkillsVaga.length + softSkillsVaga.length === 0) {
     return { score: "0.00", keywordsFound: [], keywordsMissing: [], totalKeywords: 0 };
   }
@@ -45,46 +43,49 @@ export function analisarATS(vaga: string, resume: ResumeData): Score {
     { text: resume.basics.summary, peso: 0.5 },
   ];
 
+  // Peso máximo de todas as seções, usado para ser o limite a ser atingido
+  const maxSectionWeight = Math.max(...sections.map((s) => s.peso));
+
   let keywordsFound: string[] = [];
   let scoreTotal = 0;
   let scoreTotalMaxVaga = 0;
 
-  function processSkills(skills: string[], multiplier: number) {
-    skills.forEach((skill) => {
-      // Peso máximo = maior peso entre todas as seções × multiplicador
-      const maxWeight = Math.max(...sections.map((s) => s.peso)) * multiplier;
+  // Função genérica para processar skills
+  const processSkills = (skills: string[], multiplier: number) => {
+    for (const skill of skills) {
+      const maxWeight = maxSectionWeight * multiplier;
       scoreTotalMaxVaga += maxWeight;
 
-      let skillWeight = 0;
+      let accumulatedWeight = 0;
 
-      // Acumula peso se encontrado em qualquer seção, sem ultrapassar maxWeight
       for (const sec of sections) {
-        if (containsWholeWord(sec.text, skill)) {
-          skillWeight += sec.peso * multiplier;
-          if (skillWeight >= maxWeight) {
-            skillWeight = maxWeight;
+        if (containsWholeWord(sec.text, skill) || fuzzyMatch(sec.text, skill) == true) {
+          accumulatedWeight += sec.peso * multiplier;
+
+          if (accumulatedWeight >= maxWeight) {
+            accumulatedWeight = maxWeight;
             break;
           }
         }
       }
 
-      if (skillWeight > 0) keywordsFound.push(skill);
-      scoreTotal += skillWeight;
-    });
-  }
+      if (accumulatedWeight > 0) keywordsFound.push(skill);
+      scoreTotal += accumulatedWeight;
+    }
+  };
 
   // Processa hard e soft skills
-  processSkills(hardSkillsVaga, 1);   // Hard skill = peso total
-  processSkills(softSkillsVaga, 0.5); // Soft skill = metade do peso
+  processSkills(hardSkillsVaga, 1);   // Hard skill = peso cheio
+  processSkills(softSkillsVaga, 0.5); // Soft skill = metade
 
-  // Faltantes
+  // Palavras que faltam
   const keywordsMissing = [
     ...hardSkillsVaga.filter((k) => !keywordsFound.includes(k)),
     ...softSkillsVaga.filter((k) => !keywordsFound.includes(k)),
   ];
 
   const totalKeywords = hardSkillsVaga.length + softSkillsVaga.length;
-  const score = scoreTotalMaxVaga > 0 ? ((scoreTotal / scoreTotalMaxVaga) * 100).toFixed(2) : "0.00";
+  const score = ((scoreTotal / scoreTotalMaxVaga) * 100).toFixed(2);
 
   return { score, keywordsFound, keywordsMissing, totalKeywords };
 }

@@ -12,7 +12,7 @@ export default function JobModal({ setIsModalOpen, data }: JobModalProps) {
   const [score, setScore] = useState<Score | null>(null);
 
   const handleAnalyzeATS = (vaga: string) => {
-    let result = analisarATS(vaga, data)
+    const result = analisarATS(vaga, data)
     setScore(result)
   }
 

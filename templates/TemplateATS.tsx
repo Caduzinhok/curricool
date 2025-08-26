@@ -97,8 +97,8 @@ export const TemplateATS = forwardRef<HTMLDivElement, TemplateProps>(
                   <div className="flex justify-between font-semibold">
                     <span>{project.name}</span>
                     {project.link && (
-                      <a href={project.link} className="text-blue-700 underline text-xs" target="_blank">
-                        {project.link}
+                      <a href={project.link} className="text-blue-700 underline text-xs">
+                          {project.link}
                       </a>
                     )}
                   </div>

@@ -16,7 +16,10 @@ import { TemplateATS } from "@/templates/TemplateATS";
 import CertificateForm from "@/components/forms/certificates";
 
 import Navbar from "@/components/navbar";
-import { Download } from "lucide-react";
+import GenerateButton from "@/components/generate-button";
+import { Bot } from "lucide-react";
+import { analisarATS } from "@/utils/percentage-ats";
+import JobModal from "@/components/job-modal";
 
 TemplateClean.displayName = "TemplateClean";
 TemplateATS.displayName = "TemplateATS";
@@ -28,6 +31,7 @@ export default function Home() {
   const contentRef = useRef<HTMLDivElement>(null);
   const [isPrinting, setIsPrinting] = useState(false);
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
   // We store the resolve Promise being used in `onBeforePrint` here
   const promiseResolveRef = useRef<((value?: void | PromiseLike<void>) => void) | null>(null);
 
@@ -36,7 +40,8 @@ export default function Home() {
     documentTitle: `Currículo - ${data.basics?.name || 'Sem nome'}`,
     contentRef: contentRef,
     pageStyle: `@page { size: A4; margin: 0; } body { margin: 0; }`,
-    onBeforePrint: () => {
+    onBeforePrint: async () => {
+
       return new Promise((resolve) => {
         promiseResolveRef.current = resolve;
         setIsPrinting(true);
@@ -47,6 +52,12 @@ export default function Home() {
       promiseResolveRef.current = null;
     },
   });
+
+
+  const openModal = () => {
+    setIsModalOpen(true)
+  }
+
 
   // We watch for the state to change here, and for the Promise resolve to be available
   useEffect(() => {
@@ -69,7 +80,6 @@ export default function Home() {
   const TemplateComponent = useMemo(() => {
     return template === "ATS" ? TemplateATSWithLang : TemplateCleanWithLang;
   }, [template, language]);
-
 
 
   return (
@@ -103,13 +113,16 @@ export default function Home() {
             <LanguageForm setData={setData} data={data} />
             <ProjectsForm setData={setData} data={data} />
           </div>
-          <button
-            onClick={handlePrint}
-            className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-emerald-600 to-sky-700 text-white font-semibold rounded-2xl shadow-lg hover:opacity-90 active:scale-95 transition-all duration-200 text-sm sm:text-base"
-            title="Exportar PDF"
-          >
-            <Download size={16} />Gerar PDF
-          </button>
+          <div className="flex justify-between gap-4 mt-2">
+            <button
+              onClick={openModal}
+              className="flex items-center w-full justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-red-600 to-purple-700 text-white font-semibold rounded-2xl shadow-lg hover:opacity-90 active:scale-95 transition-all duration-200 text-sm sm:text-base cursor-pointer"
+            >
+              <Bot size={20} />
+              Compatibilidade com Vagas
+            </button>
+            <GenerateButton handlePrint={handlePrint} />
+          </div>
         </section>
 
         {/* Preview */}
@@ -119,6 +132,13 @@ export default function Home() {
           contentRef={contentRef}
           data={data}
         />
+
+        {isModalOpen && (
+          <JobModal 
+            setIsModalOpen={setIsModalOpen}
+            data={data}
+            />
+        )}
       </main>
 
       {/* Footer */}

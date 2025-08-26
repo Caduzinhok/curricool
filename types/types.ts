@@ -87,7 +87,7 @@ export interface ResumeData {
     highlights: string[];
   }>;
   certificates: Array<{
-    name: string; 
+    name: string;
     link?: string;
   }>;
 }
@@ -99,4 +99,30 @@ export interface TemplateProps {
 
 export interface TemplateProps {
   data: ResumeData;
+}
+
+export interface ResumeAIData {
+  data: {
+    experience?: Array<{
+      company: string;
+      rewrites?: Array<string>;
+      suggestions?: Array<string>;
+    }>,
+    skills?: Array<{
+      adjustments?: Array<string>;
+      missing_keywords?: Array<string>;
+    }>,
+    summary: {
+      improvements?: Array<string>;
+      missing_keywords?: Array<string>;
+    }
+  }
+}
+
+
+export interface Score {
+  keywordsFound: Array<string>;
+  keywordsMissing: Array<string>;
+  score: string;
+  totalKeywords: number;
 }

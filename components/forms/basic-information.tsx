@@ -1,16 +1,17 @@
-import { ArrayEditor } from "../array-editor";
 import { ResumeData } from "@/types/types";
 import Input from "../Input";
 import Textarea from "../textarea";
 import { PatchBasics } from "@/app/handlers";
 import { formatPhoneBR } from "@/utils/data-handlers";
-
 interface BasicInformationProps {
     setData: React.Dispatch<React.SetStateAction<ResumeData>>;
     data: ResumeData;
 }
 
+
+
 export default function BasicInformationForm({ setData, data }: BasicInformationProps) {
+
     // Handlers básicos
     const updateBasics = (patch: PatchBasics) => setData((d: ResumeData) => ({ ...d, basics: { ...d.basics, ...patch } }));
 
@@ -26,10 +27,14 @@ export default function BasicInformationForm({ setData, data }: BasicInformation
             } />
             <Input label="Localização" value={data.basics?.location || ""} onChange={(e) => updateBasics({ location: e.target.value })} />
             <Input label="Website" value={data.basics?.website || ""} onChange={(e) => updateBasics({ website: e.target.value })} />
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 relative">
                 <Textarea label="Resumo" value={data.basics?.summary || ""} onChange={(e) => updateBasics({ summary: e.target.value })} />
             </div>
+
+            
         </div>
+
+
 
     );
 }
